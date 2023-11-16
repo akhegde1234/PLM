@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2023-11-16T11:11:41 GST" name="PLM Automation" finished-at="2023-11-16T11:14:26 GST" duration-ms="165056">
+    <groups>
+    </groups>
+    <test started-at="2023-11-16T11:11:41 GST" name="RegressionTest" finished-at="2023-11-16T11:14:26 GST" duration-ms="165056">
+      <class name="com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow">
+        <test-method is-config="true" signature="createSheet()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:11:40 GST" name="createSheet" finished-at="2023-11-16T11:11:41 GST" duration-ms="989" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- createSheet -->
+        <test-method is-config="true" signature="_LaunchBrowser()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:11:41 GST" name="_LaunchBrowser" finished-at="2023-11-16T11:11:45 GST" duration-ms="4107" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- _LaunchBrowser -->
+        <test-method signature="ts02()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:11:45 GST" name="ts02" finished-at="2023-11-16T11:14:25 GST" duration-ms="160076" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- ts02 -->
+        <test-method is-config="true" signature="result(org.testng.ITestResult)[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:14:25 GST" name="result" finished-at="2023-11-16T11:14:26 GST" duration-ms="411" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=ts02 status=SUCCESS method=TS02_TechSpecFlow.ts02()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- result -->
+        <test-method is-config="true" signature="finish(org.testng.ITestContext)[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:14:26 GST" name="finish" finished-at="2023-11-16T11:14:26 GST" duration-ms="383" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[org.testng.TestRunner@6ef037e4]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- finish -->
+      </class> <!-- com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow -->
+    </test> <!-- RegressionTest -->
+  </suite> <!-- PLM Automation -->
+</testng-results>

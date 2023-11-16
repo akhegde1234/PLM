@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite configfailurepolicy="continue" name="Failed suite [PLM Automation]" guice-stage="DEVELOPMENT">
+  <listeners>
+    <listener class-name="com.lmg_dubai.PLM.listeners.MyExtentListeners"/>
+  </listeners>
+  <test thread-count="5" name="RegressionTest(failed)">
+    <classes>
+      <class name="com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow">
+        <methods>
+          <include name="createSheet"/>
+          <include name="_LaunchBrowser"/>
+          <include name="result"/>
+          <include name="ts02"/>
+          <include name="finish"/>
+        </methods>
+      </class> <!-- com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow -->
+    </classes>
+  </test> <!-- RegressionTest(failed) -->
+</suite> <!-- Failed suite [PLM Automation] -->

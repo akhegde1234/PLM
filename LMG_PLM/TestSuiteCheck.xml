@@ -1,0 +1,43 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="RegressionTestSuite_Sequential">
+	<listeners>
+    <listener class-name="com.lmg_dubai.PLM.listeners.MyExtentListeners"/>
+    </listeners>
+
+    <test name="ChromeTest">
+		<parameter name="browserName" value="chrome" />
+			<classes>
+				<class name="com.example.tests.CrossBrowserTest"/>
+			</classes>
+	</test>
+	
+	 <test name="EdgeTest">
+		<parameter name="browserName" value="edge" />
+			<classes>
+				<class name="com.example.tests.CrossBrowserTest"/>
+			</classes>
+	</test>
+	
+</suite>
+<!-- 
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"> 
+<suite name="RegressionTestSuite_Parallel" thread-count=2 parallel="tests">
+	<listeners>
+    <listener class-name="com.lmg_dubai.PLM.listeners.MyExtentListeners"/>
+    </listeners>
+ 
+    <test name="ChromeTest" thread-count=1 parallel="classes">
+		<parameter name="browserName" value="chrome" />
+			<classes>
+				<class name="com.example.tests.CrossBrowserTest"/>
+			</classes>
+	</test>
+	
+	<test name="EdgeTest" thread-count=1 parallel="classes">
+		<parameter name="browserName" value="edge" />
+			<classes>
+				<class name="com.example.tests.CrossBrowserTest"/>
+			</classes>
+	</test>
+	
+</suite>  -->

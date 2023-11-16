@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite configfailurepolicy="continue" name="PLM Automation">
+  <listeners>
+    <listener class-name="com.lmg_dubai.PLM.listeners.MyExtentListeners"/>
+  </listeners>
+  <test thread-count="5" name="RegressionTest">
+    <classes>
+      <class name="com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow"/>
+    </classes>
+  </test> <!-- RegressionTest -->
+</suite> <!-- PLM Automation -->
