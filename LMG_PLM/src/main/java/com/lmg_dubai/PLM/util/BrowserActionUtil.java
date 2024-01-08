@@ -8,9 +8,13 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -1343,7 +1347,42 @@ public class BrowserActionUtil {
 		MyExtentListeners.test.pass("Scrolled to Target Element: "+elementName);
 	}
 	
+	public static String getDateAfterAddingDays(int daysToAdd) {        
+		// Get the current date        
+		LocalDate currentDate = LocalDate.now();         
+		// Add the specified number of days        
+		LocalDate newDate = currentDate.plusDays(daysToAdd);         
+		// Format the date       
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");         
+		String formattedDate = newDate.format(formatter);
+		System.out.println("Date is: "+formattedDate);
+		return formattedDate;    
+	}
 	
-}
+	public static String getLatestDownloadedFileFromDownloads() {
+		String downloadsPath = System.getProperty("user.home") + "/Downloads";
+		File downloadsDir = new File(downloadsPath);
+		File[] files = downloadsDir.listFiles();
+		if (files != null) {
+			Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+			// Get the last downloaded file
+			if (files.length > 0) {
+				File lastDownloadedFile = files[0];
+				System.out.println("Last Downloaded File: " + lastDownloadedFile.getAbsolutePath());
+				return lastDownloadedFile.getAbsolutePath();
+			} else {
+				System.out.println("No files found in the Downloads directory.");
+			}
+		} else {
+			System.out.println("Downloads directory not found.");
+		}
+		return null;
+	}
+	
+	
+	
+	}
+	
+
 
 

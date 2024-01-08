@@ -24,6 +24,7 @@ public class PLMDashboardPage extends BasePage{
 	private static String dashboardRefreshButton="//div[@class='dashTitle' and text()='$dashboardTitle']/following-sibling::div[@id='refreshlist']//a[@alt='Refresh Query Group']";
 	private static String refreshDateAndTimeStamp="//div[@class='dashTitle' and text()='$dashboardTitle']/following-sibling::div[@id='refreshlist' and contains(text(),'Last Refreshed')]";
 	private static String dashboardAnchorBtn="//div[@class='dashTitle' and text()='$dashboardTitle']/..//div[@class='dashInner']//a//span[text()='$anchorText']";
+	private static String quickSearchOption="//ul[@id='quickSearchDocument_listbox']//li[@role='option' and text()='$optionName']";
 	
 	public void waitAndScrollToParticularDashboard(String dashboardTitleText) throws Exception {
 		GenericLib.explicitWait(driver, "//div[@id='listElementsContainer']");
@@ -65,5 +66,22 @@ public class PLMDashboardPage extends BasePage{
 		WebElement orderBuilder = driver.findElement(By.xpath("//div[@class='dashTitle' and text()='Business Process']/parent::div//a[contains(text(),'Order Builder')]"));
 		BrowserActionUtil.scrollToElement(driver, orderBuilder);
 		BrowserActionUtil.clickElement(orderBuilder, driver, "Order Builder");
+	}
+	
+	public void quickSearchUsingOptionAndText(String dropdownOptionName, String searchText) throws Exception {
+		GenericLib.explicitWait(driver, "//span[@aria-owns='quickSearchDocument_listbox']");
+		WebElement listBox = driver.findElement(By.xpath("//span[@aria-owns='quickSearchDocument_listbox']"));
+		listBox.click();
+		String requiredOptionXpath = quickSearchOption.replace("$optionName", dropdownOptionName);
+		WebElement option = driver.findElement(By.xpath(requiredOptionXpath));
+		BrowserActionUtil.scrollToElement(driver, option);
+		option.click();
+		MyExtentListeners.test.pass("User selected quick search option: "+dropdownOptionName);
+		WebElement quickSearchInputField = driver.findElement(By.xpath("//input[@id='quickSearchInput']"));
+		BrowserActionUtil.clickElement(quickSearchInputField, driver, "Quick Search Input");
+		BrowserActionUtil.clearAndType(quickSearchInputField, searchText, "Quick Search Input", driver);
+		WebElement goBtn = driver.findElement(By.xpath("//a[@id='Gbl_Search_Btn']/preceding::input[@value='Go' and @type='button']"));
+		BrowserActionUtil.clickElement(goBtn, driver, "Go Button");
+		Thread.sleep(5000);
 	}
 }

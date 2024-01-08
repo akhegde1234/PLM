@@ -37,8 +37,8 @@ public class TS02_TechSpecFlow extends BaseLib{
 		init.plmTechSpecOverviewPage.getPopupMessageAndClose();
 		init.plmTechSpecOverviewPage.getLabelValue("Request No");  
 		init.plmTechSpecOverviewPage.enterTextInInputFieldAfterScrolling("Create_Tech_Spec", 0, 8, 2, 8);//Range Ref No (Non Clothing)-RANGE001
-		init.plmTechSpecOverviewPage.enterDateInDateInputFieldAfterScrolling("Create_Tech_Spec", 0, 9, 2, 9);//Ship Date-dd/mm/yyyy
-		init.plmTechSpecOverviewPage.enterDateInDateInputFieldAfterScrolling("Create_Tech_Spec", 0, 10, 2, 10);//Launch Date-dd/mm/yyyy
+		init.plmTechSpecOverviewPage.enterDateByAddingNumberOfDaysToInputFieldAfterScrolling("Create_Tech_Spec", 0, 9, 2, 9);//Ship Date-dd/mm/yyyy
+		init.plmTechSpecOverviewPage.enterDateByAddingNumberOfDaysToInputFieldAfterScrolling("Create_Tech_Spec", 0, 10, 2, 10);//Launch Date-dd/mm/yyyy
 		init.plmTechSpecOverviewPage.clickOnSearchIconByLabelName("Create_Tech_Spec", 0, 11);//Assortment
 		//"Description", "Contains", "PLAY BALLS"
 		init.plmTechSpecOverviewPage.handlePopupDropdownAndEnterSearchText("Create_Tech_Spec", 1, 11, 2, 11, "Dropdown_Options", 1, 0);
@@ -105,11 +105,6 @@ public class TS02_TechSpecFlow extends BaseLib{
 		init.plmTechSpecOverviewPage.clickOnTableTDButtonBasedOnID("SAVEbtnCtr", "Save Button");
 		init.plmTechSpecOverviewPage.getPopupMessageAndClose();      
 		
-		//Status Updation-To be Removed
-		/**init.plmTechSpecOverviewPage.enterTextInFieldWithSearchIconOfFloatingTable("Status", "0_@100_@56_@2_@0_@0_@0", "Create_Tech_Spec", 2, 69);
-		init.plmTechSpecOverviewPage.clickOnTableTDButtonBasedOnID("SAVEbtnCtr", "Save Button");
-		**/
-		
 		//Confirm the Offer
 		init.plmTechSpecOverviewPage.clickOnFirstRowCheckBox();
 		init.plmTechSpecOverviewPage.clickOnAnchorTextButton("Confirm Offer");
@@ -145,16 +140,19 @@ public class TS02_TechSpecFlow extends BaseLib{
 		
 		//Navigate to dashboard-Order Builder
 		init.plmTechSpecOverviewPage.clickOnBSConceptImage(); 
-		
 		init.plmDashboardPage.clickOnOrderBuilder();//"Business Process", "Order Builder"
 		
 		//Order Builder
 		init.plmOrderBuilderPage.handleSelectDropdownAndEnterSearchText("Request No", "Like", requestNo);
 		init.plmOrderBuilderPage.clickOnSearchButton();
-		init.plmOrderBuilderPage.clickOnAddAllItemsButtonAndBuild();
+		init.plmOrderBuilderPage.clickOnAddAllItemsButtonAndBuild();  
 		
 		//Get Purchase Order
+		//init.plmDashboardPage.quickSearchUsingOptionAndText("Purchase Order by Order No", "TBD-041539");//remove
 		init.plmOrderManagementOverviewPage.getPurchaseNumber();
+		//Validate PDF PO Report for Qty and price against UI
+		init.plmOrderManagementOverviewPage.getTotalQtyAndPriceAndCompareWithPDFReportInMoreActions("PO Report");
+		
 	}
 
 }

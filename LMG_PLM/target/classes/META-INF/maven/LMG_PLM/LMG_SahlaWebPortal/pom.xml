@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>LMG_PLM</groupId>
-  <artifactId>LMG_PLM</artifactId>
+  <artifactId>LMG_SahlaWebPortal</artifactId>
   <version>0.0.1-SNAPSHOT</version>
 
-  <name>LMG_PLM</name>
+  <name>LMG_SahlaWebPortal</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 

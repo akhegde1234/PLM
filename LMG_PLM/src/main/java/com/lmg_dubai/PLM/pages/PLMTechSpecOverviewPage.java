@@ -3,7 +3,13 @@ package com.lmg_dubai.PLM.pages;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -276,7 +282,10 @@ public class PLMTechSpecOverviewPage extends BasePage{
 			WebElement msgContent = driver.findElement(By.xpath("//div[@id='msgDiv']//div[contains(@class,'notificationContent')]"));
 			System.out.println("Message Content is: "+msgContent.getText());
 			MyExtentListeners.test.info("Message Content is: "+msgContent.getText());
-			if(msgHeader.isDisplayed()) {
+			if(msgHeader.getText().contains("Error Message")) {
+				Assert.fail("Found Error Message: "+msgContent.getText());
+			}
+			else {
 				WebElement closeBtn = driver.findElement(By.xpath("//div[contains(@class,'notifyClose')]//span[contains(@class,'i-close')]"));
 				closeBtn.click();
 				System.out.println("Clicked on Message Popup Close button");
@@ -496,11 +505,300 @@ public class PLMTechSpecOverviewPage extends BasePage{
 		 BrowserActionUtil.clickElement(conceptImg, driver, "Concept Image");
 		 GenericLib.explicitWaitForTime(driver, "//div[@class='dashTitle' and text()='Business Process']/parent::div//a[contains(text(),'Order Builder')]", 120);
 	}
+	
+	public void enterDateByAddingNumberOfDaysToInputFieldAfterScrolling(String sheetName, int labelRow, int labelCol, int valueRow, int valueCol) throws Exception {
+		String numberOfDays= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, valueRow, valueCol);
+		String requiredDate = BrowserActionUtil.getDateAfterAddingDays(Integer.parseInt(numberOfDays));
+		String labelName= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, labelRow, labelCol);
+		System.out.println("Label Name is:"+labelName);
+		System.out.println("Date to enter is:"+requiredDate);
+		WebElement inputField = driver.findElement(By.xpath("//label[contains(text(),'"+labelName+"')]/following-sibling::div//input"));
+		BrowserActionUtil.scrollToElement(driver, inputField);
+		BrowserActionUtil.clickElement(inputField, driver, labelName+" field");
+		BrowserActionUtil.clearAndType(inputField, requiredDate, labelName+" field", driver);
+	}
+	
+	
+	/**
+	 * Method to scroll and enter text in all input fields based on label name in loop
+	 * @param sheetName
+	 * @param labelRow
+	 * @param labelCol
+	 * @param valueRow
+	 * @param valueCol
+	 * @throws Exception
+	 */
+	public void enterTextInAllInputFieldsForTechSpecAfterScrolling(String sheetNameAtrrTextAndValues, int rowNumHeaderText, String headerText, int attrTextRow, int attrValuesRow) throws Exception {
+		//Excel Data-Get all Attribute text and values to be entered in field and store in Map
+		HashMap<String, String> map = new HashMap<>();
+		//attr start col-->based on header text of dropdown list type and attrEndCol--> attrtext is null
+		int colHeaderText = ExcelLibrary.getHeaderTextColumnNumberInSpecifiedRow(GenericLib.sTestData, sheetNameAtrrTextAndValues, rowNumHeaderText, headerText);
+		System.out.println("Column Index of Header Text: "+colHeaderText);
+		int attrStartCol=colHeaderText+1;
+		int attrEndCol =ExcelLibrary.getNullColumnIndex(GenericLib.sTestData, sheetNameAtrrTextAndValues, attrTextRow, attrStartCol);
+		System.out.println("Column Index of Null Entry: "+attrEndCol);
+
+		for(int col=attrStartCol; col<attrEndCol; col++) {//<=
+			String attrText= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetNameAtrrTextAndValues, attrTextRow, col);
+			String attrValuesToEnter = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetNameAtrrTextAndValues, attrValuesRow, col);
+			//Mapping data and values
+			if(attrText!=null || attrText!="") {
+				map.put(attrText, attrValuesToEnter);
+			}
+		}
+
+		System.out.println("Map Includes: "+map);
 		
+		//Perform iteration based on map entries
+		for (HashMap.Entry<String, String> entry : map.entrySet()) {             
+			System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+			//{Range Ref No (Non Clothing)=RANGE001, Ship Date=3, Custom Colour =BLUE, Est RSP (AED)=45, Item Description=Carry All Cosmetics, Launch Date=60}
+			//date different locators
+			if (entry.getKey().contains("Date")) {
+				String numberOfDays= entry.getValue();
+				String requiredDate = BrowserActionUtil.getDateAfterAddingDays(Integer.parseInt(numberOfDays));
+				System.out.println("Date to enter is:"+requiredDate);
+				WebElement inputField = driver.findElement(By.xpath("//label[contains(text(),'"+entry.getKey()+"')]/following-sibling::div//input"));
+				BrowserActionUtil.scrollToElement(driver, inputField);
+				BrowserActionUtil.clickElement(inputField, driver, entry.getKey()+" field");
+				BrowserActionUtil.clearAndType(inputField, requiredDate, entry.getKey()+" field", driver);
+			} else if(entry.getKey().contains("Colour") || entry.getKey().contains("Color")) {
+				//Scroll to top(First Row getting hidden)
+				BrowserActionUtil.scrollUpToElementUsingActionsPageUpByActionCount(driver, 3);
+				String customColourIdAttribute="7_@13700_@11_@0_@0_@-1";
+				enterTextInInputFieldByIDAttribute(customColourIdAttribute, entry.getKey(), entry.getValue());
+			} else if(entry.getKey().contains("Est RSP (AED)")) {
+				String estRSPIdAttribute="12_@100_@17_@2_@0_@-1";
+				enterTextInInputFieldByIDAttribute(estRSPIdAttribute, entry.getKey(), entry.getValue());
+			}else {
+			//item desc and range ref
+			WebElement inputField = driver.findElement(By.xpath("//label[contains(text(),'"+entry.getKey()+"')]/following-sibling::input"));
+			BrowserActionUtil.scrollToElement(driver, inputField);
+			BrowserActionUtil.clickElement(inputField, driver, entry.getKey()+" field");
+			BrowserActionUtil.clearAndType(inputField, entry.getValue(), entry.getKey()+" field", driver);
+			}	
+		}	
+	}
+	
+	/**
+	 * Method to scroll and enter text in Style number field
+	 * @param styleNumber
+	 * @throws Exception
+	 */
+	public void enterTextInStyleNoInputFieldAfterScrolling(String styleNumber) throws Exception {
+		WebElement inputField = driver.findElement(By.xpath("//label[contains(text(),'Style No')]/following-sibling::input"));
+		BrowserActionUtil.scrollToElement(driver, inputField);
+		BrowserActionUtil.clickElement(inputField, driver, "Style No field");
+		BrowserActionUtil.clearAndType(inputField, styleNumber,"Style No field", driver);
+	}
+	
+	public void enterTextInInputFieldByIDAttribute(String idAttributeValue, String elementName, String textToEnter) throws Exception {
+		WebElement inputField = driver.findElement(By.xpath("//input[@id='"+idAttributeValue+"']"));
+		BrowserActionUtil.scrollToElement(driver, inputField);
+		BrowserActionUtil.clickElement(inputField, driver, elementName+" input field");
+		BrowserActionUtil.clearAndType(inputField, textToEnter, elementName, driver);
+	}
+	
+/**	public void handleAllInputFieldsWithSearchIconForTechSpecAfterScrolling(String sheetNameAtrrTextAndValues, int rowNumSearchIconHeaderText, String searchIconHeaderText, int rowNumHeaderText, String headerText,int attrTextRow, int attrValuesRow) throws Exception {
+		//Array List-All Search Icon Label name
+		 int searchIconLabelHeaderCol = ExcelLibrary.getHeaderTextColumnNumberInSpecifiedRow(GenericLib.sTestData, sheetNameAtrrTextAndValues, rowNumSearchIconHeaderText, searchIconHeaderText);
+		 System.out.println("Column Index of Search Icon Label Header Text: "+searchIconLabelHeaderCol);
+		 int searchIconLabelStartCol=searchIconLabelHeaderCol+1;
+		 int searchIconLabelEndCol =ExcelLibrary.getNullColumnIndex(GenericLib.sTestData, sheetNameAtrrTextAndValues, rowNumSearchIconHeaderText, searchIconLabelStartCol);
+		 System.out.println("Column Index of Null Entry: "+searchIconLabelEndCol);
+		 ArrayList<String> searchIconLabelList = new ArrayList<String>();
+		 for(int col=searchIconLabelStartCol; col<searchIconLabelEndCol; col++) {//<=
+			String labelName = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetNameAtrrTextAndValues, rowNumSearchIconHeaderText, col);	
+			searchIconLabelList.add(labelName);
+		}
+		 System.out.println("Search Icon Labels List: "+searchIconLabelList);
+		 HashSet<String> searchIconLabelSet = new HashSet<String>();
+		 System.out.println("Search Icon Labels Set: "+searchIconLabelSet);
+		
+		 
+		//Excel Data-Get all text and values to be entered in field and store in array lists(order)
+		ArrayList<String> labelNameList = new ArrayList<String>();
+		int colHeaderText = ExcelLibrary.getHeaderTextColumnNumberInSpecifiedRow(GenericLib.sTestData, sheetNameAtrrTextAndValues, rowNumHeaderText, headerText);
+		System.out.println("Column Index of Header Text: "+colHeaderText);
+		int attrStartCol=colHeaderText+1;
+		int attrEndCol =ExcelLibrary.getNullColumnIndex(GenericLib.sTestData, sheetNameAtrrTextAndValues, attrTextRow, attrStartCol);
+		System.out.println("Column Index of Null Entry: "+attrEndCol);
+
+		ArrayList<String> labelAttrTextList = new ArrayList<String>();
+		ArrayList<String> labelAttrValuesList = new ArrayList<String>();
+		for(int col=attrStartCol; col<=attrEndCol; col++) {//<=
+			String attrText= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetNameAtrrTextAndValues, attrTextRow, col);
+			String attrValuesToEnter = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetNameAtrrTextAndValues, attrValuesRow, col);
+			//Lists
+			labelAttrTextList.add(attrText);			
+			labelAttrValuesList.add(attrValuesToEnter);
+		}
+
+		System.out.println("Labels Text List: "+labelAttrTextList);
+		System.out.println("Labels Text Values List: "+labelAttrValuesList);
+		
+		//Perform iteration based on list entries
+		for(String searchIconLabel:searchIconLabelSet) {//set for iteration(No duplicate for search Icon)
+			clickOnSearchIconByLabelName(searchIconLabel);//Season-Row 0(Only one Set)
+			for(int j=0; j<=labelAttrTextList.size(); j++) {
+				for(int k=0; k<=labelAttrValuesList.size(); k++) {
+					handlePopupDropdownAndEnterSearchText("Create_Tech_Spec", 1, 3, 2, 3, "Dropdown_Options", 1, 0);//"Season", "Contains", "BS REGULAR"  (Row 1 and 2)
+					
+				}
+			}
+		}
+		clickOnSearchButtonInPopupAndSelectFirstRecord();
+	}	**/
+	
+	public void handleFieldsWithSearchIconAndPopupDetailsSearchForTechSpecAfterScrolling(String sheetName, int rowNumSearchIconHeaderText, String searchIconHeaderText,int popupLabelTextRow, int popupValuesRow, String dropdownOptionSheetName, int dropdownOptionRow, int dropdownOptionCol) throws Exception {
+		//get search icon label name from header reference and click on it
+		int searchIconLabelHeaderCol = ExcelLibrary.getHeaderTextColumnNumberInSpecifiedRow(GenericLib.sTestData, sheetName, rowNumSearchIconHeaderText, searchIconHeaderText);
+		int searchIconLabelCol=searchIconLabelHeaderCol+1;
+		String searchIconLabelName = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, rowNumSearchIconHeaderText, searchIconLabelCol);
+		System.out.println("Search Icon Label Name: "+searchIconLabelName);
+		//Locators differ
+		if(!(searchIconLabelName.contains("Color Information")) && !(searchIconLabelName.contains("Supplier"))){
+		clickOnSearchIconByLabelName(searchIconLabelName);
+		}
+		
+		 int searchIconLabelEndCol =ExcelLibrary.getNullColumnIndex(GenericLib.sTestData, sheetName, rowNumSearchIconHeaderText, searchIconLabelCol);
+		 System.out.println("Column Index of Null Entry: "+searchIconLabelEndCol);
+
+		 //Store popup search details in Map
+		 HashMap<String, String> map = new HashMap<String, String>();
+		 for(int col=searchIconLabelCol; col<searchIconLabelEndCol; col++) {//<=
+			 String popupLabelText= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, popupLabelTextRow, col);
+			 String popupValuesToEnter = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, popupValuesRow, col);
+			 //Mapping data and values
+			 if(popupLabelText!=null) {
+				 map.put(popupLabelText, popupValuesToEnter);
+			 }
+		 }
+
+		 System.out.println("Search Popup Map Includes: "+map);
+		 
+		 //Enter Search Popup Details based on Map entries
+		 try {
+		 for (HashMap.Entry<String, String> entry : map.entrySet()) {
+			 System.out.println("Key: "+entry.getKey()+" Value: "+entry.getValue());
+			 
+			 if(searchIconLabelName.contains("Color Information")||searchIconLabelName.contains("Colour Information")||searchIconLabelName.contains("Supplier")) {
+					if(searchIconLabelName.contains("Color Information")||searchIconLabelName.contains("Colour Information")){
+						BrowserActionUtil.scrollUpToElementUsingActionsPageUpByActionCount(driver, 2);
+						String[] requiredLabelName = searchIconLabelName.split("-");
+						System.out.println("Required Label : "+requiredLabelName);
+						String colorInfoSearchLabelName = requiredLabelName[requiredLabelName.length-1];
+						System.out.println("Search Icon Label Name: "+colorInfoSearchLabelName);//Name or Family/Shade or Custom Colour
+						String nameIDAttr="valsearch_7_@1_@101_@0_@0_@-1_@desc";
+						String familyShadeIDAttr="valsearch_7_@13700_@12_@0_@0_@-1_@desc";
+						if(colorInfoSearchLabelName.equalsIgnoreCase("Name")) {
+							WebElement searchIcon = driver.findElement(By.xpath("//img[@id='"+nameIDAttr+"']"));
+							BrowserActionUtil.scrollToElement(driver, searchIcon);
+							BrowserActionUtil.clickElement(searchIcon, driver, "Color Info-Name");
+						}else {
+							WebElement searchIcon = driver.findElement(By.xpath("//img[@id='"+familyShadeIDAttr+"']"));
+							BrowserActionUtil.scrollToElement(driver, searchIcon);
+							BrowserActionUtil.clickElement(searchIcon, driver, "Color Info-Family/Shade");
+						}
+					}else {
+						//Supplier
+						BrowserActionUtil.scrollUpToElementUsingActionsPageUpByActionCount(driver, 1);
+						String[] requiredLabelName = searchIconLabelName.split("-");
+						System.out.println("Required Label : "+requiredLabelName);
+						String supplierSearchLabelName = requiredLabelName[requiredLabelName.length-1];
+						System.out.println("Search Icon Label Name: "+supplierSearchLabelName);//Supplier
+						WebElement searchIcon = driver.findElement(By.xpath("//img[@id='valsearch_12_@100_@4_@2_@0_@-1_@desc']"));
+						BrowserActionUtil.scrollToElement(driver, searchIcon);
+						BrowserActionUtil.clickElement(searchIcon, driver, "Supplier");
+					}
+				handlePopupDropdownAndEnterSearchTextInSearchPopup(entry.getKey(), entry.getValue(), dropdownOptionSheetName, searchIconLabelCol, searchIconLabelEndCol);
+				}else {
+			        handlePopupDropdownAndEnterSearchTextInSearchPopup(entry.getKey(), entry.getValue(), dropdownOptionSheetName, searchIconLabelCol, searchIconLabelEndCol);
+				}
+		 }
+		 clickOnSearchButtonInPopupAndSelectFirstRecord();
+		 }catch(Exception e) {
+			 e.printStackTrace();
+			 MyExtentListeners.test.info("Not found key and value pair as expected");
+		 }
+	}
+	
+	
+	
+	public void clickOnSearchIconByLabelName(String searchIconLabelName) throws Exception {
+		System.out.println("Search Icon Label Name is: "+searchIconLabelName);
+		WebElement searchIcon = driver.findElement(By.xpath("//label[contains(text(),'"+searchIconLabelName+"')]/following-sibling::div//img[contains(@id,'valsearch')]"));
+		BrowserActionUtil.scrollToElement(driver, searchIcon);
+		BrowserActionUtil.clickElement(searchIcon, driver, searchIconLabelName+" Search Icon");
+		GenericLib.explicitWait(driver, "//div[@id='validationsearchcontroldiv']");	
+	}
+	
+	public void handlePopupDropdownAndEnterSearchTextInSearchPopup(String popupDropdownLabelName, String searchText, String dropDownOptionSheetName, int dropdownOptionRow, int dropdownOptionCol ) throws Exception{
+		String textOptionInDropdown = ExcelLibrary.getExcelData(GenericLib.sTestData, dropDownOptionSheetName, dropdownOptionRow, dropdownOptionCol);
+		//Popup handling-Dropdown and text field
+		String reqdLabelXpath=searchPopupDropdownLabelXpath.replace("$popupLabelName", popupDropdownLabelName);
+		System.out.println("Search Popup Dropdown Label Xpath is: "+reqdLabelXpath);
+		WebElement dropdownLabel = driver.findElement(By.xpath(reqdLabelXpath));
+		int columnIndex = getColumnIndex(dropdownLabel);
+		System.out.println("Column Index of "+popupDropdownLabelName+" is: "+columnIndex);
+		String dropdownInd = String.valueOf(columnIndex);
+		System.out.println("Dropdown Index is: "+dropdownInd);
+		String reqdDropdownXpath=searchPopupDropdownXpath.replace("$dropdownIndex", dropdownInd);
+		WebElement dropdown = driver.findElement(By.xpath(reqdDropdownXpath));
+		BrowserActionUtil.clickElement(dropdown, driver, popupDropdownLabelName+" Dropdown");
+		BrowserActionUtil.handleSelectDropdown(driver, dropdown, textOptionInDropdown);
+		String searchTextFieldXpath = searchPopupTextFieldXpath.replace("$dropdownIndex", dropdownInd);
+		System.out.println("Search Text field Xpath is: "+searchTextFieldXpath);
+		WebElement searchTextFld = driver.findElement(By.xpath(searchTextFieldXpath));
+		BrowserActionUtil.clickElement(searchTextFld, driver, popupDropdownLabelName+" Search Field");
+		BrowserActionUtil.clearAndType(searchTextFld, searchText, popupDropdownLabelName+" Search Field", driver);
+		Thread.sleep(1000);
+	}	
+	
+	public void handleAllSelectDropdownByIDAttributeForTechSpec(String sheetName, int rowNumDropdownHeaderText, String dropdownHeaderText, int dropdownLabelTextRow, int dropdownOptionTextRow) throws Exception {
+		//get dropdown from header reference 
+		int dropdownsLabelHeaderCol = ExcelLibrary.getHeaderTextColumnNumberInSpecifiedRow(GenericLib.sTestData, sheetName, rowNumDropdownHeaderText, dropdownHeaderText);
+		int selectDropdownLabelCol=dropdownsLabelHeaderCol+1;
+		String selectDropdownLabelName = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, rowNumDropdownHeaderText, selectDropdownLabelCol);
+		System.out.println("Select Dropdown Label Name: "+selectDropdownLabelName);
+
+		//Last cell with content
+		int selectDropdownLabelEndCol =ExcelLibrary.getNullColumnIndex(GenericLib.sTestData, sheetName, rowNumDropdownHeaderText, selectDropdownLabelCol);
+		System.out.println("Column Index of Null Entry: "+selectDropdownLabelEndCol);
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		for(int col=selectDropdownLabelCol; col<selectDropdownLabelEndCol; col++) {
+			String dropdownLabelText= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, dropdownLabelTextRow, col);
+			 String dropdownOptionToSelect = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, dropdownOptionTextRow, col);
+			 //Mapping data and values
+			 if(dropdownLabelText!=null) {
+				 map.put(dropdownLabelText, dropdownOptionToSelect);
+			 }
+		}
+		System.out.println("Select Dropdowns Map Include: "+map);
+		
+		for (HashMap.Entry<String, String> entry : map.entrySet()) {
+			System.out.println("Key: "+entry.getKey()+ " Value: "+entry.getValue());
+			if(entry.getKey().trim().equalsIgnoreCase("Size Range")) {
+				WebElement selectDropdownSize = driver.findElement(By.xpath("//select[@id='8_@14200_@2_@0_@0_@-1']"));
+				BrowserActionUtil.scrollToElement(driver, selectDropdownSize);
+				BrowserActionUtil.clickElement(selectDropdownSize, driver, entry.getKey());
+				BrowserActionUtil.handleSelectDropdown(driver, selectDropdownSize, entry.getValue());
+				Thread.sleep(1000);
+			}
+			else if(entry.getKey().trim().equalsIgnoreCase("Garment Type")) {
+				WebElement selectDropdownGarment = driver.findElement(By.xpath("//select[@id='18_@100_@81_@0_@0_@0']"));
+				BrowserActionUtil.scrollToElement(driver, selectDropdownGarment);
+				BrowserActionUtil.clickElement(selectDropdownGarment, driver, entry.getKey());
+				BrowserActionUtil.handleSelectDropdown(driver, selectDropdownGarment, entry.getValue());
+				Thread.sleep(1000);
+			}
+			else {
+				MyExtentListeners.test.info("Add Locator Id attribute for:"+entry.getKey());
+			}
+		
+		}
+	}
+	
 }
 	
-	
-	
-	
-
-
