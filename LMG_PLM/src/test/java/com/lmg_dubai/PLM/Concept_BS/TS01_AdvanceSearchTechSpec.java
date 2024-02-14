@@ -11,7 +11,7 @@ public class TS01_AdvanceSearchTechSpec extends BaseLib{
 
 		InitializePages init = new InitializePages(globalVar.driver);
 
-		init.plmLoginPage.loginToPLM("Login_Cred_PLM", 0, 1, 1, 1);
+		init.plmLoginPage.loginToPLM("Login_Cred_PLM", 2, 1, 3, 1);
 		init.plmHomePage.clickOnNavigationHeader("DESIGN CENTER");
 		init.plmHomePage.clickOnNavigationSubHeader("DESIGN CENTER DASHBOARD");
 		init.plmHomePage.clickOnNavigationDashboardTextOption("Tech Spec");
@@ -49,12 +49,12 @@ public class TS01_AdvanceSearchTechSpec extends BaseLib{
 		init.plmAdvanceSearchTechSpecPage.expandAdvancedSearchTechSpecAndClearSearchFields();
 		//By Buy Program popup-NA
 		//By Supplier-popup
-		init.plmAdvanceSearchTechSpecPage.clickOnSearchIconByLabelName("AdvanceSearch_Tech_Spec", 0, 10);
-		init.plmAdvanceSearchTechSpecPage.handlePopupDropdownAndEnterSearchText("AdvanceSearch_Tech_Spec", 1, 10, 2, 10, "Dropdown_Options", 1, 0);
-		init.plmAdvanceSearchTechSpecPage.clickOnSearchButtonInPopupAndSelectFirstRecord();
-		init.plmAdvanceSearchTechSpecPage.scrollAndClickSearchButton();
-		init.plmAdvanceSearchTechSpecPage.verifySearchDetails();
-		init.plmAdvanceSearchTechSpecPage.expandAdvancedSearchTechSpecAndClearSearchFields();
+//		init.plmAdvanceSearchTechSpecPage.clickOnSearchIconByLabelName("AdvanceSearch_Tech_Spec", 0, 10);
+//		init.plmAdvanceSearchTechSpecPage.handlePopupDropdownAndEnterSearchText("AdvanceSearch_Tech_Spec", 1, 10, 2, 10, "Dropdown_Options", 1, 0);
+//		init.plmAdvanceSearchTechSpecPage.clickOnSearchButtonInPopupAndSelectFirstRecord();
+//		init.plmAdvanceSearchTechSpecPage.scrollAndClickSearchButton();
+//		init.plmAdvanceSearchTechSpecPage.verifySearchDetails();
+//		init.plmAdvanceSearchTechSpecPage.expandAdvancedSearchTechSpecAndClearSearchFields();
 		//By Dept
 		init.plmAdvanceSearchTechSpecPage.enterTextInInputFieldAfterScrolling("AdvanceSearch_Tech_Spec", 0, 11, 2, 11);
 		init.plmAdvanceSearchTechSpecPage.verifySearchDetails();

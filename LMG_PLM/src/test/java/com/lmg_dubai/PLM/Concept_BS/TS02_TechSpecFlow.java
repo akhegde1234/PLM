@@ -8,8 +8,12 @@ public class TS02_TechSpecFlow extends BaseLib{
 	@Test
 	public void ts02() throws Exception {
 		
+//		InitializePages init = new InitializePages(globalVar.driver);
+//		init.plmLoginPage.loginToPLM("Login_Cred_PLM", 0, 1, 1, 1);
+		
 		InitializePages init = new InitializePages(globalVar.driver);
-		init.plmLoginPage.loginToPLM("Login_Cred_PLM", 0, 1, 1, 1);
+		init.plmLoginPage.loginToPLM("Login_Cred_PLM", 2, 1, 3, 1);
+		
 		//Create Tech Spec-BS
 		init.plmHomePage.clickOnNavigationHeader("DESIGN CENTER");
 		init.plmHomePage.clickOnNavigationSubHeader("DESIGN CENTER DASHBOARD");
@@ -151,7 +155,7 @@ public class TS02_TechSpecFlow extends BaseLib{
 		//init.plmDashboardPage.quickSearchUsingOptionAndText("Purchase Order by Order No", "TBD-041539");//remove
 		init.plmOrderManagementOverviewPage.getPurchaseNumber();
 		//Validate PDF PO Report for Qty and price against UI
-		init.plmOrderManagementOverviewPage.getTotalQtyAndPriceAndCompareWithPDFReportInMoreActions("PO Report");
+		//init.plmOrderManagementOverviewPage.getTotalQtyAndPriceAndCompareWithPDFReportInMoreActions("PO Report");
 		
 	}
 

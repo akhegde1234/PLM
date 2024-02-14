@@ -800,5 +800,26 @@ public class PLMTechSpecOverviewPage extends BasePage{
 		}
 	}
 	
+	public void handleToggleButtonAfterScrolling(String idAttribute, String sheetName, int labelRow, int labelCol, int valueRow, int valueCol) throws Exception {
+		String valueToUpdate= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, valueRow, valueCol);//Yes or No
+		String labelName= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, labelRow, labelCol);
+		System.out.println("Label Name is:"+labelName);
+		System.out.println("Toggle has to update to:"+valueToUpdate);
+		WebElement toggleBtn = driver.findElement(By.xpath("//label[contains(text(),'"+labelName+"')]/following::div[@id='"+idAttribute+"' and @class='toggle-btn']"));
+		WebElement toggleBtnStatus = driver.findElement(By.xpath("//label[contains(text(),'"+labelName+"')]/following::input[contains(@id,'chk')and @class='toggle-chkbox']"));
+		BrowserActionUtil.scrollToElement(driver, toggleBtn);
+		BrowserActionUtil.clickElement(toggleBtn, driver, labelName+" Toggle");
+		MyExtentListeners.test.info("Toogle Value for "+labelName+ " after click is: "+toggleBtnStatus.getAttribute("value"));
+		if(toggleBtnStatus.getAttribute("value").equalsIgnoreCase(valueToUpdate)) {
+			MyExtentListeners.test.pass("The default toggle value is same as value to be overriden: "+toggleBtnStatus.getAttribute("value"));
+		}else {
+		BrowserActionUtil.clickElement(toggleBtn, driver, labelName+" Toggle Button");
+		Thread.sleep(2000);
+		WebElement toggleBtnUpdated = driver.findElement(By.xpath("//label[contains(text(),'"+labelName+"')]/following::input[contains(@id,'chk')and @class='toggle-chkbox']"));
+		MyExtentListeners.test.pass("The toggle value is overriden to: "+toggleBtnUpdated.getAttribute("value"));
+		}	
+	}
+
+	
 }
 	

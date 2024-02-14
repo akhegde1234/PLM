@@ -7,6 +7,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.testng.Assert;
 
 import com.lmg_dubai.PLM.library.BasePage;
 import com.lmg_dubai.PLM.library.ExcelLibrary;
@@ -44,6 +45,8 @@ public class PLMAdvanceSearchTechSpecPage extends BasePage{
 	@FindBy(xpath="//td//b[text()='Tech Spec List']")
 	private WebElement techSpecListBtn;
 	
+	
+	
 	private static String searchPopupDropdownLabelXpath="//div[@id='searchBarDiv']//td[@class='searchLabels' and text()='$popupLabelName']";
 	private static String searchPopupDropdownXpath="(//td//select[@class='searchOpDropDown'])[$dropdownIndex]";
 	private static String searchPopupTextFieldXpath="(//td//input[@class='searchInput'])[$dropdownIndex]";
@@ -69,6 +72,23 @@ public class PLMAdvanceSearchTechSpecPage extends BasePage{
 		inputField.sendKeys(Keys.ENTER);
 		Thread.sleep(10000);
 	}
+	
+	
+	public void enterTextInInputFieldAfterScrollingNew(String sheetName, int labelRow, int labelCol, int valueRow, int valueCol) throws Exception {
+		String valueToEnter= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, valueRow, valueCol);
+		String labelName= ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, labelRow, labelCol);
+		System.out.println("Value to enter is:"+valueToEnter);
+		System.out.println("Label Name is:"+labelName);
+		WebElement inputField = driver.findElement(By.xpath("//label[contains(text(),'"+labelName+"')]/following-sibling::input"));
+		BrowserActionUtil.scrollToElement(driver, inputField);
+		BrowserActionUtil.clickElement(inputField, driver, labelName+" field");
+		BrowserActionUtil.clearAndType(inputField, valueToEnter, labelName+" field", driver);
+		//inputField.sendKeys(Keys.ENTER);
+		Thread.sleep(10000);
+	}
+	
+	
+	
 	
 	public void verifySearchDetails() {
 		try {
@@ -189,7 +209,90 @@ public class PLMAdvanceSearchTechSpecPage extends BasePage{
 		return columns.indexOf(tdElement)+1; //Xpath from 1 and index from 0
 	}
 	
+	//Mithun
 	
+		@FindBy(xpath="//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'listview')]")
+		private WebElement listViewBtn;
+		
+		
+		public void verifySearchDetailsInListView(String sheetName, int styleNoRow, int styleNoCol) throws Exception {
+			GenericLib.explicitWaitForTime(driver, "//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'listview')]", 2);
+			BrowserActionUtil.clickElement(listViewBtn, driver, "List View Button");
+			GenericLib.explicitWaitForTime(driver, "//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'listviewactive')]", 5);
+			MyExtentListeners.test.info("Search Details is in List View");
+			try {
+				WebElement styleHeaderLabel = driver.findElement(By.xpath("//table[@id='MainSection_left_table']//td[@class='clslabelheader']//label[contains(text(),'Style No')]"));
+				WebElement itemImg = driver.findElement(By.xpath("//table[@id='MainSection_left_table']//img[@id='0_@10000_@13_@0_@0_@0']"));
+				WebElement styleNo = driver.findElement(By.xpath("//table[@id='MainSection_left_table']//a[@id='0_@100_@4_@0_@0_@0lnk']"));
+				MyExtentListeners.test.pass("Buyer or User is able to validate the list view for Style entered: "+styleNo.getText());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Assert.fail("User could not validate List View In Advance Search for Tech Spec.");
+			}	
+		}
+		
+		@FindBy(xpath="//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'mediumview')]")
+		private WebElement mediumViewBtn;
+		
+		public void verifySearchDetailsInMediumView() throws Exception {
+			GenericLib.explicitWaitForTime(driver, "//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'mediumview')]", 2);
+			BrowserActionUtil.clickElement(mediumViewBtn, driver, "Medium View Button");
+			GenericLib.explicitWaitForTime(driver, "//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'mediumviewactive')]", 5);
+			MyExtentListeners.test.info("Search Details is in Medium View");
+			try {
+				WebElement itemImg = driver.findElement(By.xpath("//div[@id='gridDiv_0' and @class='colorWallCellSpace']//img[@id='img_icon_0_@10000_@12_@0_@0_@-1']"));
+				WebElement checkBoxAndStyleNo = driver.findElement(By.xpath("//table[@id='_tableMainMainSection']//table[@id='MainSection_data_table']//tr//td//input[contains(@id,'chkRowKeys')]/following::a[@id='0_@100_@4_@0_@0_@0_@_mainDivlnk']"));
+				MyExtentListeners.test.pass("Buyer or User is able to validate the medium view for Style entered: "+checkBoxAndStyleNo.getText());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Assert.fail("User could not validate Medium View In Advance Search for Tech Spec.");
+			}	
+		}
+	 
+		@FindBy(xpath="//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'gridview')]")
+		private WebElement gridViewBtn;
+		
+		public void verifySearchDetailsInGridView() throws Exception {
+			GenericLib.explicitWaitForTime(driver, "//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'gridview')]", 2);
+			BrowserActionUtil.clickElement(gridViewBtn, driver, "Grid View Button");
+			GenericLib.explicitWaitForTime(driver, "//td//b[text()='Tech Spec List']/following::td//img[contains(@src,'gridviewactive')]", 5);
+			MyExtentListeners.test.info("Search Details is in Grid View");
+			try {
+				WebElement itemImg = driver.findElement(By.xpath("//div[@id='gridDiv_0' and @class='colorWallCell']//img[@id='0_@10000_@14_@0_@0_@0']"));
+				WebElement checkBoxAndStyleNo = driver.findElement(By.xpath("//table[@id='_tableMainMainSection']//table[@id='MainSection_data_table']//tr//td//input[contains(@id,'chkRowKeys')]/following::a[@id='0_@100_@4_@0_@0_@0_@_mainDivlnk']"));
+				MyExtentListeners.test.pass("Buyer or User is able to validate the Grid view for Style entered: "+checkBoxAndStyleNo.getText());
+			} catch (Exception e) {
+				e.printStackTrace();
+				Assert.fail("User could not validate Grid View In Advance Search for Tech Spec.");
+			}	
+		}
+		
+		@FindBy(xpath="//td[@id='DMainSection_left_table0']//input[@type='checkbox']")
+		private List<WebElement> allStyleCheckboxes;
+		
+		public void selectMultipleStylesInSearchList(int numberOfCheckBoxesToSelect) throws Exception {
+			try {
+				for(int num=1; num<=numberOfCheckBoxesToSelect; num++) {
+					WebElement styleCheckbox = driver.findElement(By.xpath("(//td[@id='DMainSection_left_table0']//input[@type='checkbox'])["+num+"]"));
+					BrowserActionUtil.clickElement(styleCheckbox, driver, "Style Checkbox: "+num);
+					MyExtentListeners.test.pass("User selected Style Checbox: "+num);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Assert.fail("Could not select multiple styles checkboxes as expected.");
+			}
+		}
+		
+		@FindBy(xpath="//a[@id='0_@100_@4_@0_@0_@0lnk']")
+		private WebElement firstStyleLink;
+		
+		public void clickOnFirstStyleLinkInTheSearchResultsList() throws Exception {
+			BrowserActionUtil.scrollToElement(driver, firstStyleLink);
+			GenericLib.explicitWaitForTime(driver, "//a[@id='0_@100_@4_@0_@0_@0lnk']", 5);
+			BrowserActionUtil.clickElement(firstStyleLink, driver, "First Style Link: "+firstStyleLink.getText());
+			GenericLib.explicitWaitForTime(driver, "//td[@id='TECHSPEC_OVERVIEW_SAVEbtnCtr']", 10);
+		}
+		
 	
 
 }

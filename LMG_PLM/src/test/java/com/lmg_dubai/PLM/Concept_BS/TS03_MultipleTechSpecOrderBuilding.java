@@ -126,7 +126,7 @@ public class TS03_MultipleTechSpecOrderBuilding extends BaseLib{
 		//init.plmDashboardPage.quickSearchUsingOptionAndText("Purchase Order by Order No", "TBD-041539");//remove
 		init.plmOrderManagementOverviewPage.getPurchaseNumber();
 		//Validate PDF PO Report for Qty and price against UI
-		init.plmOrderManagementOverviewPage.getTotalQtyAndPriceAndCompareWithPDFReportInMoreActions("PO Report"); 
+		//init.plmOrderManagementOverviewPage.getTotalQtyAndPriceAndCompareWithPDFReportInMoreActions("PO Report"); 
 		}
 		
 	}

@@ -43,7 +43,7 @@ public class PLMLoginPage extends BasePage{
 		String userID = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, userIDRow, userIDcol);
 		String pwd = ExcelLibrary.getExcelData(GenericLib.sTestData, sheetName, pwdRow, pwdcol);
 		try {
-			WebDriverWait wait = new WebDriverWait(driver,20);
+			WebDriverWait wait = new WebDriverWait(driver,20000);
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@id='formsubmit']")));
 			BrowserActionUtil.clickElement(userIDField, driver, "User ID Field");
 			BrowserActionUtil.clearAndType(userIDField, userID, "User ID Field", driver);

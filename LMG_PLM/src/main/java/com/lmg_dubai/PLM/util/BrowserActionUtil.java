@@ -1359,25 +1359,25 @@ public class BrowserActionUtil {
 		return formattedDate;    
 	}
 	
-	public static String getLatestDownloadedFileFromDownloads() {
-		String downloadsPath = System.getProperty("user.home") + "/Downloads";
-		File downloadsDir = new File(downloadsPath);
-		File[] files = downloadsDir.listFiles();
-		if (files != null) {
-			Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
-			// Get the last downloaded file
-			if (files.length > 0) {
-				File lastDownloadedFile = files[0];
-				System.out.println("Last Downloaded File: " + lastDownloadedFile.getAbsolutePath());
-				return lastDownloadedFile.getAbsolutePath();
-			} else {
-				System.out.println("No files found in the Downloads directory.");
-			}
-		} else {
-			System.out.println("Downloads directory not found.");
-		}
-		return null;
-	}
+//	public static String getLatestDownloadedFileFromDownloads() {
+//		String downloadsPath = System.getProperty("user.home") + "/Downloads";
+//		File downloadsDir = new File(downloadsPath);
+//		File[] files = downloadsDir.listFiles();
+//		if (files != null) {
+//			Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+//			// Get the last downloaded file
+//			if (files.length > 0) {
+//				File lastDownloadedFile = files[0];
+//				System.out.println("Last Downloaded File: " + lastDownloadedFile.getAbsolutePath());
+//				return lastDownloadedFile.getAbsolutePath();
+//			} else {
+//				System.out.println("No files found in the Downloads directory.");
+//			}
+//		} else {
+//			System.out.println("Downloads directory not found.");
+//		}
+//		return null;
+//	}
 	
 	
 	
