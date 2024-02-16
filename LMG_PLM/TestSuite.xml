@@ -6,7 +6,8 @@
   </listeners>
   <test thread-count="5" name="RegressionTest">
     <classes>
-      <class name="com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow"/>
+		<class name="com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow"/>
+     <!-- <class name="com.lmg_dubai.PLM.Concept_BS.TS03_MultipleTechSpecOrderBuilding"/> -->
     </classes>
   </test> <!-- RegressionTest -->
 </suite> <!-- PLM Automation -->

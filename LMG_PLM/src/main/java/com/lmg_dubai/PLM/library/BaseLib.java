@@ -124,7 +124,7 @@ public class BaseLib {
 	public void result(ITestResult res) throws Exception {
 		
 		// Closing Browser
-		//globalVar.driver.quit();
+		globalVar.driver.quit();
 		
 		String stat = null;
 		String test = res.getName();

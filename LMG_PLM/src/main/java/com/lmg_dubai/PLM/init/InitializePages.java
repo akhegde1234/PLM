@@ -2,6 +2,7 @@ package com.lmg_dubai.PLM.init;
 
 import org.openqa.selenium.WebDriver;
 
+import com.lmg_dubai.PLM.pages.PLMAdvanceSearchTechSpecPage;
 import com.lmg_dubai.PLM.pages.PLMDashboardPage;
 import com.lmg_dubai.PLM.pages.PLMHomePage;
 import com.lmg_dubai.PLM.pages.PLMLoginPage;
@@ -26,6 +27,7 @@ public class InitializePages {
 	public PLMTerritoryQuantityAllocationPage plmTerritoryQuantityAllocationPage;
 	public PLMOrderBuilderPage plmOrderBuilderPage;
 	public PLMOrderManagementOverviewPage plmOrderManagementOverviewPage;
+	public PLMAdvanceSearchTechSpecPage plmAdvanceSearchTechSpecPage;
 
 	/** APP CLASSES INITIALISATION **/
 	public  InitializePages(WebDriver driver) {
@@ -39,5 +41,6 @@ public class InitializePages {
 	plmTerritoryQuantityAllocationPage= new PLMTerritoryQuantityAllocationPage(driver);
 	plmOrderBuilderPage = new PLMOrderBuilderPage(driver);
 	plmOrderManagementOverviewPage = new PLMOrderManagementOverviewPage(driver);
+	plmAdvanceSearchTechSpecPage = new PLMAdvanceSearchTechSpecPage(driver);
 	}
 }

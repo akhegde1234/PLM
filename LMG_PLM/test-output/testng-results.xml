@@ -1,40 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-11-16T11:11:41 GST" name="PLM Automation" finished-at="2023-11-16T11:14:26 GST" duration-ms="165056">
+  <suite started-at="2023-12-19T07:56:45 GST" name="PLM Automation" finished-at="2023-12-19T08:00:45 GST" duration-ms="240391">
     <groups>
     </groups>
-    <test started-at="2023-11-16T11:11:41 GST" name="RegressionTest" finished-at="2023-11-16T11:14:26 GST" duration-ms="165056">
+    <test started-at="2023-12-19T07:56:45 GST" name="RegressionTest" finished-at="2023-12-19T08:00:45 GST" duration-ms="240391">
       <class name="com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow">
-        <test-method is-config="true" signature="createSheet()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:11:40 GST" name="createSheet" finished-at="2023-11-16T11:11:41 GST" duration-ms="989" status="PASS">
+        <test-method is-config="true" signature="createSheet()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@3eb91815]" started-at="2023-12-19T07:56:43 GST" name="createSheet" finished-at="2023-12-19T07:56:45 GST" duration-ms="1136" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- createSheet -->
-        <test-method is-config="true" signature="_LaunchBrowser()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:11:41 GST" name="_LaunchBrowser" finished-at="2023-11-16T11:11:45 GST" duration-ms="4107" status="PASS">
+        <test-method is-config="true" signature="_LaunchBrowser()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@3eb91815]" started-at="2023-12-19T07:56:45 GST" name="_LaunchBrowser" finished-at="2023-12-19T07:56:53 GST" duration-ms="8328" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- _LaunchBrowser -->
-        <test-method signature="ts02()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:11:45 GST" name="ts02" finished-at="2023-11-16T11:14:25 GST" duration-ms="160076" status="PASS">
+        <test-method signature="ts02()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@3eb91815]" started-at="2023-12-19T07:56:53 GST" name="ts02" finished-at="2023-12-19T08:00:44 GST" duration-ms="230990" status="FAIL">
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Found Error Message: Adopt process failed for Tech Spec 048 TB24JUL23-2 TESTING
+No matching In DC Dates found in the Merchandise Calendar for the Season.
+Sell Channel build failed.]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Found Error Message: Adopt process failed for Tech Spec 048 TB24JUL23-2 TESTING
+No matching In DC Dates found in the Merchandise Calendar for the Season.
+Sell Channel build failed.
+at org.testng.Assert.fail(Assert.java:99)
+at com.lmg_dubai.PLM.pages.PLMTechSpecOverviewPage.getPopupMessageAndClose(PLMTechSpecOverviewPage.java:286)
+at com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow.ts02(TS02_TechSpecFlow.java:115)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:598)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:824)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:794)
+at org.testng.TestRunner.run(TestRunner.java:596)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:377)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:371)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:332)
+at org.testng.SuiteRunner.run(SuiteRunner.java:276)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1212)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1134)
+at org.testng.TestNG.runSuites(TestNG.java:1063)
+at org.testng.TestNG.run(TestNG.java:1031)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- ts02 -->
-        <test-method is-config="true" signature="result(org.testng.ITestResult)[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:14:25 GST" name="result" finished-at="2023-11-16T11:14:26 GST" duration-ms="411" status="PASS">
+        <test-method is-config="true" signature="result(org.testng.ITestResult)[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@3eb91815]" started-at="2023-12-19T08:00:44 GST" name="result" finished-at="2023-12-19T08:00:45 GST" duration-ms="500" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=ts02 status=SUCCESS method=TS02_TechSpecFlow.ts02()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5] output={null}]]]>
+                <![CDATA[[TestResult name=ts02 status=FAILURE method=TS02_TechSpecFlow.ts02()[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@3eb91815] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- result -->
-        <test-method is-config="true" signature="finish(org.testng.ITestContext)[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@2dc9b0f5]" started-at="2023-11-16T11:14:26 GST" name="finish" finished-at="2023-11-16T11:14:26 GST" duration-ms="383" status="PASS">
+        <test-method is-config="true" signature="finish(org.testng.ITestContext)[pri:0, instance:com.lmg_dubai.PLM.Concept_BS.TS02_TechSpecFlow@3eb91815]" started-at="2023-12-19T08:00:45 GST" name="finish" finished-at="2023-12-19T08:00:46 GST" duration-ms="397" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[org.testng.TestRunner@6ef037e4]]>
+                <![CDATA[org.testng.TestRunner@3d88ce0e]]>
               </value>
             </param>
           </params>

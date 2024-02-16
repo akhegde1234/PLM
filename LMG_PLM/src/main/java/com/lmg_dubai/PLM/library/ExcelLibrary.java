@@ -268,8 +268,10 @@ public class ExcelLibrary {
 			Row row = sht.getRow(rowNumberToSearch);
 			
 			for(Cell cell: row) {
-			if(cell.getStringCellValue().equalsIgnoreCase(searchHeaderText)) {
+			//System.out.println("Cell values : "+cell.getStringCellValue());
+			if(cell.getStringCellValue().trim().equalsIgnoreCase(searchHeaderText)) {
 				colIndex = cell.getColumnIndex();
+				System.out.println("Header Column Index is : "+colIndex);
 				break;
 			  }
 			}
@@ -342,7 +344,8 @@ public class ExcelLibrary {
                 // Iterate over the cells in the row
                 for (int columnIndex = columnToStart; columnIndex < row.getLastCellNum(); columnIndex++) {
                     Cell cell = row.getCell(columnIndex);
-                    if (cell == null) {
+                    //if (cell == null) {
+                    if(getExcelData(sPath, sheetName, rowNumberToSearch, columnIndex).length()==0) {
                         System.out.println("Found null cell at column index: " + columnIndex);
                         return columnIndex;
                     }
@@ -371,6 +374,31 @@ public class ExcelLibrary {
 		String rowsToCheck = getExcelData(sPath, sheetName, row, col);
 		String[] rows = rowsToCheck.split("-");
 		return Integer.parseInt(rows[rows.length-1].trim());
+	}
+	
+	public static ArrayList<String> getAllDataInARowBasedOnHeader(String sPath, String sheetName, int headerRow, int headerCol) {
+		try {			
+			 // Load the Excel file
+            FileInputStream fis = new FileInputStream(sPath);
+            Workbook workbook = WorkbookFactory.create(fis);
+
+			Sheet sheet = workbook.getSheet(sheetName);
+			Row row = sheet.getRow(headerRow);
+			int numberOfValues = row.getPhysicalNumberOfCells()-1;//Eliminate Row Header Text
+			//System.out.println("Number of Values: "+numberOfValues);
+			ArrayList<String> allTextList = new ArrayList<String>();
+			for(int i=0; i<numberOfValues; i++) {
+				//Get text and add
+				if(getExcelData(sPath,sheetName, headerRow, i+1).length()!=0) { //Clear All cells in Excel sheet if "" encountered
+				allTextList.add(getExcelData(sPath, sheetName, headerRow, i+1));
+				}
+			}
+			System.out.println("Excel Data List Includes: "+allTextList);
+			return allTextList;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

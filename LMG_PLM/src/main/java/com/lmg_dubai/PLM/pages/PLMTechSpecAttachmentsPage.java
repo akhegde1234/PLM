@@ -110,6 +110,12 @@ public class PLMTechSpecAttachmentsPage extends BasePage{
 		}
 	}
 	
+	//Mithun
 	
+	public void clickOnSaveButtonByIdAttribute(String idAttribute) throws Exception {
+		GenericLib.explicitWait(driver, "//td[@id='"+idAttribute+"']");
+		WebElement saveButton = driver.findElement(By.xpath("//td[@id='"+idAttribute+"']"));
+		BrowserActionUtil.clickElement(saveButton, driver, "Save Button");
+	}
 	
 }

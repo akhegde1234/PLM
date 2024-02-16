@@ -152,6 +152,7 @@ public class PLMTechSpecAttributesPage extends BasePage{
 						System.out.println("Value To Enter in Attribute LOV Field is: "+valueToEnter);
 						BrowserActionUtil.clickElement(attributeLOVInput, driver, "Attribute LOV Field");
 						attributeLOVInput.sendKeys(valueToEnter);
+						Thread.sleep(1000);
 						attributeLOVInput.sendKeys(Keys.ENTER);
 					}else {
 						System.out.println("Attribute LOV Default value available is: "+lovDefaultValue);
